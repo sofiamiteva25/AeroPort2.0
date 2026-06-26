@@ -30,7 +30,7 @@ public:
 	void addLuggage(const std::string& flightId, const int& luggageAmount);
 	const double getBalance() const;
 	void refundTicket(const std::string& flightId);
-	void help() override;
+	const void help() const override;
 	void print(std::ostream& os) const override;
 	std::unique_ptr<User> clone() const override;
 

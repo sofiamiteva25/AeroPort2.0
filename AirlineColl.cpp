@@ -21,8 +21,13 @@ void AirlineColl::addAirline(std::unique_ptr<Airline> a)
 {
 	for (const auto& i : AirlineColl::getAllAirlines()) {
 		if (i->getName() == a->getName()) {
-			throw std::runtime_error("You already added airline with this name");
+			throw MyException("AirlineAlreadyAdded");
 		}
 	}
 	airlines.push_back(std::move(a));
+}
+
+void AirlineColl::airlineReset()
+{
+	airlines.clear();
 }

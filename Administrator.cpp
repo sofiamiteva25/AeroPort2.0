@@ -39,7 +39,7 @@ Administrator::Administrator(const std::string& name, const std::string& passwor
 {
 }
 
-const Administrator* Administrator::getInstance()
+Administrator* Administrator::getInstance()
 {
     return instance;
 }
@@ -82,13 +82,22 @@ void Administrator::changeWeather(const WeatherCondition& weather)
     WeatherDesign::getInstance()->updateWeather(weather);
 }
 
-void Administrator::cloneAircraft(const int& aircraftId, int count)
+void Administrator::cloneAircraft(const int aircraftId, int count)
 {
-    const std::unique_ptr<Plane>& original = PlaneCollection::getPlaneByID(aircraftId);
-    std::string type = Administrator::getPlaneType(original.get());
-    PlaneFactory factory(type, original->getCap());
+    std::string type;
+    int         cap;
+    std::string airline;
+
+    {
+        const std::unique_ptr<Plane>& original = PlaneCollection::getPlaneByID(aircraftId);
+        type = Administrator::getPlaneType(original.get());
+        cap = original->getCap();
+        airline = original->getAirline();
+    }
+
+    PlaneFactory factory(type, cap);
     for (int i = 0; i < count; i++) {
-        factory.createPlane(original->getAirline()); 
+        factory.createPlane(airline);
     }
 }
 
@@ -104,6 +113,10 @@ void Administrator::sentPlaneToHangar(const int& planeId, const std::string& han
 
 void Administrator::scheduleFlight(const std::string& flightId, const int& planeId, const double& price, const std::string& destination)
 {
+    if (PlaneCollection::getPlaneByID(planeId)->AssignedFlight())
+		throw MyException("PlaneAlreadyAssignedToFlight");
+    if (PlaneCollection::getPlaneByID(planeId)->getCon() != Condition::freePlane)
+		throw MyException("PlaneInMaintenance");
     std::unique_ptr<Flight> newFlight = std::make_unique<Flight>(flightId, planeId, price, destination);
     FlightCatalog::addFlight(newFlight);
 }
@@ -136,8 +149,8 @@ void Administrator::airportReport(std::ostream& os) const
             plane->accept(visitor);
         }
     }
-    catch (const std::runtime_error& e) {
-        e.what();
+    catch (MyException& e) {
+        std::cout << e.what() << '\n';
     }
 
 
@@ -175,8 +188,13 @@ std::string Administrator::getPlaneType(const Plane* plane)
 
 void Administrator::buyAircraft(std::string airline_name, std::string model, int capacity)
 {
-    PlaneFactory f(model, capacity);
-    f.createPlane(airline_name);
+    try {
+        PlaneFactory f(model, capacity);
+        f.createPlane(airline_name);
+    }
+	catch (MyException& e) {
+		std::cout << e.what() << '\n';
+	}
 }
 
 void Administrator::registerAirline(std::string name, double balance)
@@ -208,7 +226,7 @@ void Administrator::auditAirline(std::string airlineName) const
     std::cout << "Current balance: " << balance << "\n";
 }
 
-void Administrator::help()
+const void Administrator::help() const
 {
     std::cout << "1.BuildRunway\n";
     std::cout << "2.BuildHangar\n";
@@ -218,10 +236,17 @@ void Administrator::help()
     std::cout << "6.RetrieveFromHangar\n";
     std::cout << "7.CancelFlight\n";
     std::cout << "8.FlightRevenue\n";
-    std::cout << "9.ListFleet\n";
+    std::cout << "9.PrintFleet\n";
     std::cout << "10.AirportReport\n";
     std::cout << "11.AuditAirline\n";
-
+    std::cout << "12.BuyAircraft\n";
+    std::cout << "13.RegisterAirline\n";
+    std::cout << "14.CloseRunway\n";
+    std::cout << "15.ChangeWeather\n";
+    std::cout << "16.Logout\n";
+    std::cout << "17.Save\n";
+    std::cout << "18.Load\n";
+    std::cout << "19.Exit\n";
 }
 
 std::unique_ptr<User> Administrator::clone() const

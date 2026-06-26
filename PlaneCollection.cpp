@@ -24,12 +24,7 @@ void PlaneCollection::addPlane(std::unique_ptr<Plane> plane)
 
 const std::vector<std::unique_ptr<Plane>>& PlaneCollection::getAllPlanes()
 {
-    if (planes.size() != 0) {
-        return planes;
-    }
-    else {
-        throw MyException("NoAddedPlanes");
-    }
+    return planes;
 }
 
 void PlaneCollection::printAllPlanes(std::ostream& os)

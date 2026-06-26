@@ -21,3 +21,13 @@ void UserColl::addUser(std::unique_ptr<User> u)
 {
     users.push_back(std::move(u));
 }
+
+bool UserColl::isUser(std::string name)
+{
+    for (const auto& i : users) {
+        if (i->getName() == name) {
+            return 1;
+        }
+    }
+    return 0;
+}

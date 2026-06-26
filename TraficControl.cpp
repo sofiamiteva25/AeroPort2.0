@@ -47,7 +47,7 @@ void TrafficControl::assignRunway(const std::string& flightId, int runwayId)
     try {
         executeAndRecord(std::make_unique<AssignRunwayCommand>(flightId, runwayId));
     }
-    catch (std::runtime_error& e) {
+    catch (MyException& e) {
         e.what();
     }
 
@@ -58,7 +58,7 @@ void TrafficControl::delayFlight(const std::string& flightId, const std::string&
     try {
         executeAndRecord(std::make_unique<DelayFlightCommand>(flightId, reason));
     }
-    catch (std::runtime_error& e) {
+    catch (MyException& e) {
         e.what();
     }
 }
@@ -68,7 +68,7 @@ void TrafficControl::freeRunway(int runwayId)
     try {
         executeAndRecord(std::make_unique<FreeRunwayCommand>(runwayId));
     }
-    catch (std::runtime_error& e) {
+    catch (MyException& e) {
         e.what();
     }
 }
@@ -83,12 +83,12 @@ void TrafficControl::undo()
         history.back()->undo();
         history.pop_back();
     }
-    catch (const std::runtime_error& e) {
+    catch (const MyException& e) {
         e.what();
     }
 }
 
-void TrafficControl::help()
+const void TrafficControl::help() const
 {
     std::cout << "1.ListAirspace\n";
     std::cout << "2.ListRunways\n";
@@ -96,6 +96,10 @@ void TrafficControl::help()
     std::cout << "4.DelayFlight\n";
     std::cout << "5.FreeRunway\n";
     std::cout << "6.Undo\n";
+    std::cout << "7.Logout\n";
+    std::cout << "8.Save\n";
+    std::cout << "9.Load\n";
+    std::cout << "10.Exit\n";
 }
 
 void TrafficControl::print(std::ostream& os) const

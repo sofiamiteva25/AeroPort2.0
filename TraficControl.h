@@ -9,6 +9,7 @@
 #include "RunwayValidatorVisitor.h"
 #include "User.h"
 #include "IDispatchCommand.h"
+#include "MyException.h"
 class MyException;
 class TrafficControl: public User {
     std::vector<std::unique_ptr<IDispatchCommand>> history;
@@ -26,7 +27,7 @@ public:
     void delayFlight(const std::string& flightId, const std::string& reason);
     void freeRunway(int runwayId);
     void undo();
-    void help() override;
+    const void help() const override;
     void print(std::ostream& os) const override;
     std::unique_ptr<User> clone() const override;
 };

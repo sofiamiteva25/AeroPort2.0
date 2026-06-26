@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "MyException.h"
 
 class UserColl;
 
@@ -30,4 +31,5 @@ public:
 	const WeatherCondition getCurrentCondition() const;
 	void notifyObservers();
 	void refund(const std::string& flightId);
+
 };

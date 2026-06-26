@@ -9,4 +9,5 @@ public:
 	static void addHangar(std::unique_ptr<Hangar> hangar);
 	static void printAllHangars(std::ostream& os);
 	static bool hangarId(std::string id);
+	static void hangarReset();
 };

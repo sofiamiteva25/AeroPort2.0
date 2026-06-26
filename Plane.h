@@ -29,7 +29,7 @@ protected:
 	int capacity;
 	Condition con;
 	std::string airlineName;
-	std::string flightID;
+	std::string flightID= "0";
 public:
 	Plane() = default;
 	Plane(int id, int capacity,

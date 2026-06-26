@@ -48,6 +48,8 @@ static std::string messageFor(exceptions code)
 	case NotPossibleTicketType:             return "Not available ticket type";
 	case PassengerWithThisNameNotFound:     return "Passenger with this name is not found";
 	case CannotCreateUser:                  return "Cannot create user";
+	case AirlineAlreadyAdded:               return "Airline already added";
+	case NotEnoughBalance:                  return "Not enough balance";
 	}
 	return "Unknown error";
 }

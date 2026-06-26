@@ -9,6 +9,9 @@ double& Passenger::addFunds(const double& amount)
     if (amount > 0) {
         balance += amount;
     }
+    if (balance < 0) {
+		throw MyException("NotEnoughBalance");
+    }
     return balance;
 }
 
@@ -41,8 +44,14 @@ std::vector<std::unique_ptr<Ticket>> Passenger::myTickets()
 void Passenger::bookTicket(const std::string flightId, const std::string type)
 {
     TicketFactory t(this->getName(), flightId, type);
-    std::unique_ptr<Ticket> ticket = t.createTicket();
-    this->addFunds(-ticket->getPaidAmount());
+    try {
+        std::unique_ptr<Ticket> ticket = t.createTicket();
+        this->addFunds(-ticket->getPaidAmount());
+		FlightCatalog::getFlightByID(flightId)->addTicket(ticket->getID());
+    }
+    catch (MyException& e) {
+       std::cout << e.what() << '\n';
+    }
 }
 
 void Passenger::upgradeTicket(const std::string flightId, std::string newType)
@@ -123,16 +132,22 @@ void Passenger::refundTicket(const std::string& flightId)
     }
 }
 
-void Passenger::help()
+const void Passenger::help() const
 {
     std::cout << "1.AddFunds\n";
-    std::cout << "2.ListFlights\n";
-    std::cout << "3.FilterFlights\n";
+    std::cout << "2.ListFlightsByDestination\n";
+    std::cout << "3.FilterFlightsByPrice\n";
     std::cout << "4.BookTicket\n";
     std::cout << "5.UpgradeTicket\n";
-    std::cout << "6.AddBaggage\n";
+    std::cout << "6.AddLuggage\n";
     std::cout << "7.CancelTicket\n";
-    std::cout << "8.MyTicket\n";
+    std::cout << "8.RefundTicket\n";
+    std::cout << "9.MyTickets\n";
+    std::cout << "10.GetBalance\n";
+    std::cout << "11.Logout\n";
+    std::cout << "12.Save\n";
+    std::cout << "13.Load\n";
+    std::cout << "14.Exit\n";
 }
 
 void Passenger::print(std::ostream& os) const

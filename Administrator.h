@@ -10,6 +10,7 @@
 #include "Runway.h"
 #include "User.h"
 #include "Plane.h"
+#include "MyException.h"
 
 class Administrator : public User
 {
@@ -18,7 +19,7 @@ class Administrator : public User
 		const std::string& password = "admin");
 
 public:
-	static const Administrator* getInstance();
+	static Administrator* getInstance();
 
 	static bool hasInstance() { return instance != nullptr; }
 
@@ -26,7 +27,7 @@ public:
 	void buildHangar(const std::string id, const int capacity, const double tax);
 	void closeRunway(const int& runwayId);
 	void changeWeather(const WeatherCondition& weather);
-	void cloneAircraft(const int& planeId, int count);
+	void cloneAircraft(const int planeId, int count);
 	void sentPlaneToHangar(const int& planeId, const std::string& hangarId);
 	void scheduleFlight(const std::string& flightId, const int& planeId,
 		const double& price, const std::string& destination);
@@ -41,7 +42,7 @@ public:
 	void buyAircraft(std::string airline_name, std::string model, int capacity);
 	void registerAirline(std::string name, double balance);
 	void auditAirline(std::string airline) const;
-	void help() override;
+	const void help() const override;
 	std::unique_ptr<User> clone() const override;
 	void print(std::ostream& os) const override;
 

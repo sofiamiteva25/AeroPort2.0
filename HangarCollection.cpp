@@ -43,3 +43,8 @@ bool HangarCollection::hangarId(std::string id)
     }
     return false;
 }
+
+void HangarCollection::hangarReset()
+{
+    hangars.clear();
+}

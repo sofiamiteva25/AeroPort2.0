@@ -1,5 +1,4 @@
 #include "User.h"
-#include "MyException.h";
 const std::string User::getPassword() const
 {
     return password;

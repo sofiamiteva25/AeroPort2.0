@@ -61,7 +61,7 @@ void WeatherDesign::setWeather(WeatherCondition newWeather)
                     try {
                         refund(f->getID());
                     }
-                    catch (const std::runtime_error& e) {
+                    catch (const MyException& e) {
                         e.what();
                     }
                 }

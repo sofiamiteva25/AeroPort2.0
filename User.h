@@ -2,7 +2,7 @@
 #include <string>
 #include <memory>
 #include <iostream>
-class MyException;
+#include "MyException.h"
 class User
 {
 protected:
@@ -12,7 +12,7 @@ public:
 	const std::string getPassword() const;
 	const std::string getName() const;
 	friend std::ostream& operator << (std::ostream& os,const std::unique_ptr<User>& p);
-	virtual void help() = 0;
+	virtual const void help() const = 0;
 	virtual ~User() = default;
 	User(std::string _name, std::string _password);
 	friend std::ostream& operator<<(std::ostream& os, const User& u);

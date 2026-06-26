@@ -25,24 +25,45 @@ void LogInterface::printInfo() const
     std::cout << *user;
 }
 
-void LogInterface::logIn(const std::unique_ptr<User>& p)
+void LogInterface::logIn(std::string name, std::string password)
 {
-    auto it = std::find_if(UserColl::getAllUsers().begin(), UserColl::getAllUsers().end(), [&p](const std::unique_ptr<User>& i) {
-        if (i->getName() == p->getName())
-            return i->getPassword() == p->getPassword();
-        else {
-            return false;
-        }});
-        if (it != UserColl::getAllUsers().end()) {
-            if (!isLogged()) {
-                user = p.get();
+    try {
+        if (name == "admin" && password == "admin") {
+            user = Administrator::getInstance();
+            return;
+        }
+        if (UserColl::getUserByName(name)) {
+            if (UserColl::getUserByName(name)->getPassword() == password) {
+                user = UserColl::getUserByName(name).get();
             }
         }
         else
             throw MyException("RegisterFirst");
+    }
+    catch (MyException& e) {
+        std::cout << e.what() << '\n';
+    }
 }
 
 LogInterface::LogInterface()
 {
     user = nullptr;
+}
+
+User* LogInterface::getUser() const {
+    return user;
+}
+
+void LogInterface::signUp(std::string name, std::string password, std::string type, double balance)
+{
+    try {
+        if (!UserColl::isUser(name)) {
+            UserFactory f(name, password, type, balance);
+            f.createUser();
+            user = UserColl::getUserByName(name).get();
+        }
+    }
+    catch (MyException& e) {
+        e.what();
+    }
 }

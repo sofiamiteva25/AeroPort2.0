@@ -24,7 +24,7 @@ void Airline::payTax(const int p)
 	for (const auto& i : HangarCollection::getAllHangars()) {
 		for (const auto& j : i->getPlanesInHangar()) {
 			if (j == p) {
-				if (balance > i->getTax()) {
+				if (balance >= i->getTax()) {
 					balance -= i->getTax();
 					return;
 				}

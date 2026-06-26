@@ -47,6 +47,8 @@ enum exceptions {
 	NotPossibleTicketType,
 	PassengerWithThisNameNotFound,
 	CannotCreateUser,
+	AirlineAlreadyAdded,
+	NotEnoughBalance,
 	Unknown
 };
 

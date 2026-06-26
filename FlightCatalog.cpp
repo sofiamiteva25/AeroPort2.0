@@ -31,9 +31,6 @@ std::vector<std::unique_ptr<Flight>> FlightCatalog::getFlightsByPrice(const doub
 			flightsByPrice.push_back(i->clone());
 		}
 	}
-	if (flightsByPrice.size() == 0) {
-		throw MyException("NoFlightsInBudget");
-	}
 	return flightsByPrice;
 }
 
